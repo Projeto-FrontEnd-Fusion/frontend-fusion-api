@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  postgres:
+    container_name: postgresql-frontend-fusion
+    image: postgres:16-alpine
+    env_file:
+      - .env
+    volumes:
+      - ./data/pg:/data/postgres
+    ports:
+      - 5431:5432
+volumes:
+  postgres:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       

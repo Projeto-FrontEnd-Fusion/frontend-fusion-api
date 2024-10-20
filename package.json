@@ -1,0 +1,50 @@
+{
+  "name": "frontend-fusion-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts",
+    "build": "tsc",
+    "serve": "node dist/index.js",
+    "docker:run": "docker compose -f docker-compose.yaml up -d",
+    "prisma:migrate-dev-local": "npx dotenv -e .env -- npx prisma migrate dev",
+    "prisma:seed": "npx prisma db seed",
+    "prisma:push": "npx prisma db push",
+    "prisma:generate": "npx prisma generate",
+    "prisma:migrate": "npx prisma migrate dev"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/jest": "^29.5.13",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/node": "^22.7.5",
+    "@types/supertest": "^6.0.2",
+    "@types/uuid": "^10.0.0",
+    "express": "^4.21.1",
+    "jest": "^29.7.0",
+    "prisma": "^5.20.0",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5",
+    "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.20.0",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "dotenv-cli": "^7.4.2",
+    "jsonwebtoken": "^9.0.2",
+    "uuid": "^10.0.0"
+  },
+  "_moduleAliases": {
+    "@": "src"
+  }
+}

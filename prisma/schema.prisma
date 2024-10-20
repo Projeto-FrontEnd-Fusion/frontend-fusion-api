@@ -1,0 +1,92 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Address {
+  id      String @id(map: "pk_address") @unique(map: "uq_address_id")
+  city    String
+  state   String
+  country String
+  users   User[]
+
+  @@map("user_address")
+}
+
+model User {
+  id              String  @id(map: "pk_user") @unique(map: "uq_user_id")
+  username        String  @unique(map: "uq_user_username")
+  email           String  @unique(map: "uq_email")
+  fullName        String  @map("full_name")
+  password        String
+  isVerified      Boolean @default(value: false)
+  isEmailVerified Boolean @default(value: false)
+  dateOfBirth     String  @map("date_of_birth")
+  addressId       String?
+  createdAt       String  @map("created_at")
+
+  address     Address?          @relation(fields: [addressId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_address")
+  sessions    Session[]
+  socialMedia UserSocialMedia[]
+  projects    Project[]
+
+  @@map("user")
+}
+
+model Session {
+  id        String  @id(map: "pk_session") @unique(map: "uq_session_id")
+  ip        String? @unique(map: "uq_ip")
+  userAgent String
+  active    Boolean @default(value: true)
+  createdAt String  @map("created_at")
+  updatedAt String  @map("updated_at")
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+
+  @@map("user_sessions")
+}
+
+model SocialMedia {
+  id      String @id(map: "pk_social_media") @unique(map: "uq_social_media_id") @db.VarChar(50)
+  name    String @unique(map: "uq_social_media_name") @db.VarChar(20)
+  baseUri String @unique(map: "uq_social_media_base_uri") @db.VarChar(100)
+
+  userSocialMedia UserSocialMedia[]
+
+  @@map("social_media")
+}
+
+model UserSocialMedia {
+  userId        String @map("user_id") @db.VarChar(50)
+  socialMediaId String @map("social_media_id") @db.VarChar(50)
+
+  socialMedia SocialMedia @relation(fields: [socialMediaId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_social_media_user_social_media")
+  user        User        @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_user_social_media")
+
+  @@id([userId, socialMediaId], map: "pk_user_social_media")
+  @@unique([userId, socialMediaId], map: "uq_user_social_media_user_id_social_media_id")
+  @@map("user_social_media")
+}
+
+model Skill {
+  id        String   @id(map: "pk_skill") @unique(map: "uq_skill_id")
+  skill     String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("user_skill")
+}
+
+model Project {
+  id        String   @id(map: "pk_project") @unique(map: "uq_project_id")
+  url       String
+  title     String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User[]
+
+  @@map("user_project")
+}
