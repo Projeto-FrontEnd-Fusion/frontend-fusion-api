@@ -1,11 +1,13 @@
 import { GetUserSessions } from '@/services/session/get-user-sessions';
 import { LoginService } from '@/services/session/login-service';
 import { UpdateUserSessionByIdService } from '@/services/session/update-user-session-by-ip';
+import { CreateUserService } from '@/services/user/user/create-user-service';
+import { getSessionData } from '@/utils/utils';
 import express, { Request, Response, Router } from 'express';
 
-export const authDefaultRoute: Router = express.Router();
+export const authRoutes: Router = express.Router();
 
-authDefaultRoute.post('/login', async (req: Request, res: Response) => {
+authRoutes.post('/login', async (req: Request, res: Response) => {
   if (!('email' in req.body) && !('password' in req.body)) {
     res.send('Missing information');
 
@@ -20,13 +22,23 @@ authDefaultRoute.post('/login', async (req: Request, res: Response) => {
   res.send('vazio');
 });
 
-authDefaultRoute.put('/session', async (req: Request, res: Response) => {
+authRoutes.post('/register', async (req: Request, res: Response) => {
+  const newUser = await CreateUserService(req.body);
+
+  res.send('teste');
+});
+
+authRoutes.put('/session', async (req: Request, res: Response) => {
+  const { sessionId, userId } = getSessionData(
+    req.headers.authorization?.split('Bearer ').at(-1)
+  );
+
   if (req.ip) {
-    await UpdateUserSessionByIdService(req.ip, req.body);
+    await UpdateUserSessionByIdService(sessionId, userId, req.body);
   }
 });
 
-authDefaultRoute.get(
+authRoutes.get(
   '/session/:userId',
   async (req: Request, res: Response) => {
     const result = await GetUserSessions(req.params.userId);

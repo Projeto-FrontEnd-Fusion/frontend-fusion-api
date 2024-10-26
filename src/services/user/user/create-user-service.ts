@@ -1,17 +1,25 @@
+import {
+  EmailAlreadyRegisteredError,
+  UsernameAlreadyExistsError,
+} from '@/errors/account';
 import { makeHashGeneratorAdapter } from '@/factories/infra/cryptography/bcrypt/hash-generator-adapter';
 import { makeUuidAdapter } from '@/factories/infra/id/uuid-adapter-factory';
 import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper';
+import { Either, left, right } from '@/shared/either';
 
 interface CreateUserDTO {
   username: string;
   email: string;
   fullName: string;
   password: string;
-  dateOfBirth: string;
   createdAt: string;
 }
 
-export async function CreateUserService(data: CreateUserDTO): Promise<void> {
+export async function CreateUserService(
+  data: CreateUserDTO
+): Promise<
+  Either<EmailAlreadyRegisteredError | UsernameAlreadyExistsError, any>
+> {
   const prisma = await PrismaHelper.getPrisma();
 
   const emailExists = await prisma.user.findUnique({
@@ -19,8 +27,9 @@ export async function CreateUserService(data: CreateUserDTO): Promise<void> {
   });
 
   if (emailExists) {
-    console.log('Email já registrado!');
-    return;
+    return left(new EmailAlreadyRegisteredError());
+    // console.log('Email já registrado!');
+    // return;
   }
 
   const usernameExists = await prisma.user.findFirst({
@@ -28,8 +37,7 @@ export async function CreateUserService(data: CreateUserDTO): Promise<void> {
   });
 
   if (usernameExists) {
-    console.log('Username já existe');
-    return;
+    return left(new UsernameAlreadyExistsError());
   }
 
   const newUser = await prisma.user.create({
@@ -39,10 +47,11 @@ export async function CreateUserService(data: CreateUserDTO): Promise<void> {
       fullName: data.fullName,
       email: data.email,
       password: makeHashGeneratorAdapter().hash(data.password),
-      dateOfBirth: data.dateOfBirth,
       createdAt: new Date().toDateString(),
     },
   });
 
   console.log(newUser);
+
+  return right(newUser);
 }

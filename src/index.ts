@@ -1,7 +1,7 @@
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import { userRoutes } from '@/routes/user';
-import { authRoutes } from './routes/auth';
+import { authRoutes } from '@/routes/auth';
 
 const corsOptions: cors.CorsOptions = {
   origin: '*',

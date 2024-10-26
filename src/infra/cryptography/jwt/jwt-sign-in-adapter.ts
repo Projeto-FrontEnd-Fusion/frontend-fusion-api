@@ -3,10 +3,14 @@ import jwt from 'jsonwebtoken';
 export class JwtSignInAdapter {
   constructor(private readonly secretKey: string) {}
 
-  execute(value: string): { token: string } {
-    const token = jwt.sign({ email: value }, this.secretKey, {
-      expiresIn: '1h',
-    });
+  execute(userId: string, sessionId: string): { token: string } {
+    const token = jwt.sign(
+      { userId: userId, sessionId: sessionId },
+      this.secretKey,
+      {
+        expiresIn: '1h',
+      }
+    );
 
     return { token };
   }

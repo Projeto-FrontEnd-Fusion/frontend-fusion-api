@@ -47,16 +47,29 @@ export async function LoginService(
   }
 
   const id = makeUuidAdapter().build();
+  const ip = session.ip;
 
-  await prisma.session.create({
-    data: {
+  await prisma.session.upsert({
+    where: { id: id },
+    create: {
       id: id,
       userId: userExists.id,
-      ip: session.ip,
+      ip: ip,
       userAgent: session.userAgent || '',
       active: true,
       updatedAt: new Date().toString(),
       createdAt: new Date().toString(),
+    },
+    update: {
+      ip: {
+        set: ip,
+      },
+      userAgent: {
+        set: session.userAgent,
+      },
+      updatedAt: {
+        set: new Date().toString(),
+      },
     },
   });
   // await prisma.session.delete({ where: { id: id } });

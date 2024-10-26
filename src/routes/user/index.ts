@@ -1,4 +1,4 @@
-import express, { Request, Response, Router } from 'express';
+import express, { Router } from 'express';
 import { skillRoute } from './skills';
 import { socialMediaRoute } from './social-media';
 import { projectsRoute } from './projects';
