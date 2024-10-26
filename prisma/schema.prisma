@@ -25,7 +25,7 @@ model User {
   password        String
   isVerified      Boolean @default(value: false)
   isEmailVerified Boolean @default(value: false)
-  dateOfBirth     String  @map("date_of_birth")
+  dateOfBirth     String? @map("date_of_birth")
   addressId       String?
   createdAt       String  @map("created_at")
 
@@ -39,11 +39,11 @@ model User {
 
 model Session {
   id        String  @id(map: "pk_session") @unique(map: "uq_session_id")
-  ip        String? @unique(map: "uq_ip")
+  ip        String?
   userAgent String
   active    Boolean @default(value: true)
   createdAt String  @map("created_at")
-  updatedAt String  @map("updated_at")
+  updatedAt String? @map("updated_at")
   userId    String
   user      User    @relation(fields: [userId], references: [id])
 
