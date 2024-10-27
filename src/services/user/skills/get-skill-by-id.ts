@@ -1,5 +1,5 @@
 import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper';
-import { SkillModel } from '@/models';
+import { SkillModel } from '@/models/skill-model';
 
 export async function GetSkillByIdService(
   id: string
