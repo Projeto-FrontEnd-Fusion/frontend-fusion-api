@@ -1,4 +1,4 @@
-import { CreateProjectService } from '@/services/user/projects/create-project-service';
+import { CreateProjectService } from '@/services/user/projects/create-project';
 import { Request, Response } from 'express';
 
 export async function CreateProjectController(req: Request, res: Response) {

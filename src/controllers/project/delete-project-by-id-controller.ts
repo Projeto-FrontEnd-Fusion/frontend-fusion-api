@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { DeleteProjectService } from '@/services/user/projects/delete-project-by-id-service';
+import { DeleteProjectService } from '@/services/user/projects/delete-project';
 
 export async function DeleteProjectByIdController(req: Request, res: Response) {
   const { id } = req.params;
