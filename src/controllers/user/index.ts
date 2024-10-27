@@ -1,5 +1,4 @@
-import { GetManyUsersController } from './get-many-users-controller';
 import { GetUserByIdController } from './get-user-by-id-controller';
-import { CreateUserController } from './create-user-controller';
+import { GetManyUsersController } from './get-many-users-controller';
 
-export { GetManyUsersController, GetUserByIdController, CreateUserController };
+export { GetManyUsersController, GetUserByIdController };

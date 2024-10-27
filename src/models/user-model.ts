@@ -6,6 +6,6 @@ export type UserModel = {
   password?: string;
   isVerified: boolean;
   isEmailVerified: boolean;
-  dateOfBirth: string | Date;
-  addressId: string;
+  dateOfBirth: string | null;
+  addressId: string | null;
 };

@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 
-import { GetManyUsersService } from '@/services/user/user/get-many-users-service';
+import { GetManyUsersService } from '@/services/user/user';
 
 export async function GetManyUsersController(req: Request, res: Response) {
   const users = await GetManyUsersService();
