@@ -1,9 +1,7 @@
-import express, { Request, Response, Router } from 'express';
+import express, { type Router } from 'express';
+
+import { CreateUserSocialMediaController } from '@/controllers/user-social-media';
 
 export const socialMediaRoute: Router = express.Router();
 
-socialMediaRoute.post('/social-media', (req: Request, res: Response) => {
-  console.log(req.body);
-
-  res.send('Social Media Route');
-});
+socialMediaRoute.post('/social-media', CreateUserSocialMediaController);

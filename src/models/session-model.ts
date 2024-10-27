@@ -3,7 +3,7 @@ export type SessionModel = {
   ip: string;
   userAgent: string;
   active: boolean;
-  createdAt: string | boolean;
-  updatedAt: string | boolean;
+  createdAt: string;
+  updatedAt?: string;
   userId: string;
 };

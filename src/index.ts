@@ -1,14 +1,8 @@
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
-import { userRoutes } from '@/routes/user';
-import { authRoutes } from '@/routes/auth';
 
-const corsOptions: cors.CorsOptions = {
-  origin: '*',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  preflightContinue: false,
-  optionsSuccessStatus: 204,
-};
+import { userRoutes, authRoutes } from '@/routes';
+import { corsOptions } from '@/configs';
 
 const app: Application = express();
 app.use(express.json());
@@ -19,7 +13,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use('/api', userRoutes);
-app.use('/api', authRoutes);
+app.use('/api/auth', authRoutes);
 
 const port = process.env.PORT || 8080;
 

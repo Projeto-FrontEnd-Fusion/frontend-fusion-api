@@ -57,7 +57,6 @@ export async function LoginService(
       ip: ip,
       userAgent: session.userAgent || '',
       active: true,
-      updatedAt: new Date().toString(),
       createdAt: new Date().toString(),
     },
     update: {

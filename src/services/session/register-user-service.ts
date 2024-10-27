@@ -28,8 +28,6 @@ export async function CreateUserService(
 
   if (emailExists) {
     return left(new EmailAlreadyRegisteredError());
-    // console.log('Email já registrado!');
-    // return;
   }
 
   const usernameExists = await prisma.user.findFirst({
@@ -47,7 +45,7 @@ export async function CreateUserService(
       fullName: data.fullName,
       email: data.email,
       password: makeHashGeneratorAdapter().hash(data.password),
-      createdAt: new Date().toDateString(),
+      createdAt: new Date().toString(),
     },
   });
 
