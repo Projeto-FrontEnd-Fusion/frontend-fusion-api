@@ -2,11 +2,12 @@ import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 
 import { userRoutes, authRoutes } from '@/routes';
-import { corsOptions } from '@/configs';
+import { corsOptions, limiter } from '@/configs';
 
 const app: Application = express();
 app.use(express.json());
 app.use(cors(corsOptions));
+app.use(limiter);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Olá');
