@@ -1,5 +1,6 @@
-import { CreateProjectService } from '@/services/user/projects/create-project';
 import { Request, Response } from 'express';
+
+import { CreateProjectService } from '@/services/user/projects/create-project-service';
 
 export async function CreateProjectController(req: Request, res: Response) {
   const body = req.body;

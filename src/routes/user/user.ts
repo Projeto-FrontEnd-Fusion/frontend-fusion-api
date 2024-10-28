@@ -10,4 +10,4 @@ export const userDefaultRoute: Router = express.Router();
 
 userDefaultRoute.get('/', GetManyUsersController);
 userDefaultRoute.post('/', CreateUserController);
-userDefaultRoute.get('/user/:userId', GetUserByIdController);
+userDefaultRoute.get('/:userId', GetUserByIdController);

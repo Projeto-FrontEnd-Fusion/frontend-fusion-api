@@ -1,6 +1,6 @@
-import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper';
+import { PrismaHelper } from '@/infra/db/prisma/helpers';
 
-export async function GetProjectsByUserId(userId: string) {
+export async function GetManyProjectsByUserIdService(userId: string) {
   const prisma = await PrismaHelper.getPrisma();
   const projects = await prisma.user.findMany({
     where: { id: userId },

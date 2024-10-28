@@ -1,6 +1,6 @@
 import { ProjectModel } from '@/models/project-model';
-import { makeUuidAdapter } from '../../../factories/infra/id/uuid-adapter-factory';
-import { PrismaHelper } from '../../../infra/db/prisma/helpers/prisma-helper';
+import { makeUuidAdapter } from '@/factories/infra/id';
+import { PrismaHelper } from '@/infra/db/prisma/helpers';
 
 export async function CreateProjectService(
   project: ProjectModel

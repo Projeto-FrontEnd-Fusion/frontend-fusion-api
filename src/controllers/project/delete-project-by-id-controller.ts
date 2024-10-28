@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 
-import { DeleteProjectService } from '@/services/user/projects/delete-project';
+import { DeleteProjectByIdService } from '@/services/user/projects';
 
 export async function DeleteProjectByIdController(req: Request, res: Response) {
   const { id } = req.params;
 
-  const deleted = await DeleteProjectService(id);
+  const deleted = await DeleteProjectByIdService(id);
 
   if (deleted) {
     res.send('deleted').status(200);
