@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken';
 
-export class JwtSignInAdapter {
+import { Encrypter } from '@/types/cryptography';
+
+export class JwtSignInAdapter implements Encrypter {
   constructor(private readonly secretKey: string) {}
 
   execute(userId: string, sessionId: string): { token: string } {
