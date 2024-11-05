@@ -1,6 +1,12 @@
+import { WrongPasswordError } from '@/errors/account';
+import { UserNotFoundedError } from '@/errors/user';
 import { makeHashGeneratorAdapter } from '@/factories/infra/cryptography/bcrypt/hash-generator-adapter';
+import { makeJwtSignInAdapter } from '@/factories/infra/cryptography/jwt-sign-in-adapter-factory';
 import { makeUuidAdapter } from '@/factories/infra/id/uuid-adapter-factory';
 import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper';
+import { UserModel } from '@/models';
+import { Either, left, right } from '@/shared/either';
+import { userAgent } from 'next/server';
 
 // 1. verify if user exists
 // 2. verify if password matches
@@ -20,11 +26,19 @@ interface SessionDTO {
   userAgent?: string;
 }
 
+export type LoginServiceDataResponse = {
+  token: string;
+};
+
+export type LoginServiceResponse = Promise<
+  Either<UserNotFoundedError | WrongPasswordError, LoginServiceDataResponse>
+>;
+
 // TODO: create error messages
 export async function LoginService(
   data: LoginServiceDTO,
   session: SessionDTO
-): Promise<void> {
+): LoginServiceResponse {
   const prisma = await PrismaHelper.getPrisma();
 
   const userExists = await prisma.user.findUnique({
@@ -32,8 +46,7 @@ export async function LoginService(
   });
 
   if (!userExists) {
-    console.log('User not registered');
-    return;
+    return left(new UserNotFoundedError());
   }
 
   const passwordMatches = makeHashGeneratorAdapter().matches(
@@ -42,36 +55,56 @@ export async function LoginService(
   );
 
   if (!passwordMatches) {
-    console.log('Wrong password');
-    return;
+    return left(new WrongPasswordError());
   }
 
   const id = makeUuidAdapter().build();
   const ip = session.ip;
 
-  await prisma.session.upsert({
-    where: { id: id },
-    create: {
-      id: id,
-      userId: userExists.id,
+  const userSession = await prisma.session.findFirst({
+    where: {
       ip: ip,
-      userAgent: session.userAgent || '',
-      active: true,
-      createdAt: new Date().toString(),
-    },
-    update: {
-      ip: {
-        set: ip,
-      },
-      userAgent: {
-        set: session.userAgent,
-      },
-      updatedAt: {
-        set: new Date().toString(),
-      },
+      userId: userExists.id,
     },
   });
-  // await prisma.session.delete({ where: { id: id } });
+
+  if (!userSession) {
+    const newSession = await prisma.session.create({
+      data: {
+        id: id,
+        userId: userExists.id,
+        ip: ip,
+        userAgent: session.userAgent || '',
+        active: true,
+        createdAt: new Date().toISOString(),
+      },
+    });
+  } else {
+    await prisma.session.updateMany({
+      where: {
+        active: true,
+      },
+      data: {
+        active: false,
+        updatedAt: new Date().toISOString(),
+      },
+    });
+
+    const updatedSession = await prisma.session.update({
+      where: {
+        id: userSession.id,
+      },
+      data: {
+        active: true,
+        userAgent: session.userAgent || undefined,
+        updatedAt: new Date().toISOString(),
+      },
+    });
+  }
 
   console.log(session.ip, session.userAgent);
+
+  const token = makeJwtSignInAdapter().execute(userExists.id, userExists.email);
+
+  return right({ token: token });
 }

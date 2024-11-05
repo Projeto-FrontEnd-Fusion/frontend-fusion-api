@@ -1,11 +1,15 @@
 import type { Request, Response } from 'express';
 
-import { GetManyUsersService } from '@/services/user/user/get-many-users-service';
+import { GetManyUsersService } from '@/services/user/user';
+import HttpStatusCode from '@/utils/statusCode';
 
-export async function GetManyUsersController(req: Request, res: Response) {
+export async function GetManyUsersController(
+  req: Request,
+  res: Response
+): Promise<void> {
   const users = await GetManyUsersService();
 
-  console.log(`GET Users ${new Date().toLocaleString()}`, users);
+  res.send({ data: users, message: '', statusCode: HttpStatusCode.OK });
 
-  res.send({ data: users });
+  return;
 }

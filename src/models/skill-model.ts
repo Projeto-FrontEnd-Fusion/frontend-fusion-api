@@ -1,5 +1,5 @@
 export type SkillModel = {
   id: string;
-  skill: string;
-  createdAt: string | Date;
+  name: string;
+  createdAt: string;
 }

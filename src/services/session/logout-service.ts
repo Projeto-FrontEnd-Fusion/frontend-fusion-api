@@ -1,16 +1,29 @@
-import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper';
+import { PrismaHelper } from '@/infra/db/prisma/helpers';
 
-// 1. verify if user exists
-// 2. exclude current session model data
-// 3. return a status code ok
-
-export async function LogoutService(sessionId: string) {
+export async function LogoutService(userId: string, sessionId: string) {
   const prisma = await PrismaHelper.getPrisma();
-  await prisma.session.update({
-    where: { id: sessionId, active: true },
-    data: {
-      active: false,
-      updatedAt: new Date().toString(),
+
+  const sessionActive = await prisma.session.findFirst({
+    where: {
+      userId: userId,
+      active: true,
     },
   });
+
+  let data;
+
+  if (sessionActive) {
+    data = await prisma.session.update({
+      where: {
+        id: sessionActive.id,
+        userId,
+      },
+      data: {
+        active: false,
+        updatedAt: new Date().toISOString(),
+      },
+    });
+  }
+
+  return data;
 }

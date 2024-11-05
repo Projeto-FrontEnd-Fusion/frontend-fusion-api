@@ -12,7 +12,8 @@ export type SocialMedia = {
 
 export type Skill = {
   id: string;
-  skill: string;
+  name: string;
+  // category: string;
   createdAt: string | Date;
 };
 

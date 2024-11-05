@@ -1,7 +1,14 @@
-import express, { Application, Request, Response, NextFunction } from 'express';
+import express, { type Application } from 'express';
 import cors from 'cors';
 
-import { userRoutes, authRoutes } from '@/routes';
+import {
+  userRoutes,
+  authRoutes,
+  skillRoute,
+  projectsRoute,
+  socialMediaRoute,
+  stackRoutes,
+} from '@/routes';
 import { corsOptions, limiter } from '@/configs';
 import { RequestLog } from './shared/helpers/req-log';
 
@@ -16,8 +23,13 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api', userRoutes);
-app.use('/api/auth', authRoutes);
+app.use('/api/v1/skill', skillRoute);
+app.use('/api/v1/project', projectsRoute);
+app.use('/api/v1/social-media', socialMediaRoute);
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/user', userRoutes);
+app.use('/api/v1/skill', skillRoute);
+app.use('/api/v1/stack', stackRoutes);
 
 const port = process.env.PORT || 8080;
 

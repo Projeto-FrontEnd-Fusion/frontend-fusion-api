@@ -1,6 +1,6 @@
 import { PrismaHelper } from '@/infra/db/prisma/helpers';
 
-export async function GetManySocialMediaByUserIdService(
+export async function GetManyUserSocialMediaByUserIdService(
   userId: string
 ): Promise<any[] | []> {
   const prisma = await PrismaHelper.getPrisma();

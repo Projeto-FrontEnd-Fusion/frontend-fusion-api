@@ -1,17 +1,20 @@
 import express, { type Router } from 'express';
 
-import { skillRoute } from './skills';
-import { socialMediaRoute } from './social-media';
-import { projectsRoute } from './projects';
-import { userDefaultRoute } from './user';
-import { HelloWorldController } from '@/controllers/user';
+import {
+  CreateUserController,
+  DeleteUserByIdController,
+  GetManyUsersController,
+  GetUserByIdController,
+  GetUserByTokenController,
+} from '@/controllers/user';
 
 const userRoutes: Router = express.Router();
 
-userRoutes.get('/', HelloWorldController);
-userRoutes.use('/user', userDefaultRoute);
-userRoutes.use('/user', skillRoute);
-userRoutes.use('/user', socialMediaRoute);
-userRoutes.use('/user', projectsRoute);
+userRoutes.get('/profile', GetUserByTokenController);
+userRoutes.route('').get(GetManyUsersController).post(CreateUserController);
+userRoutes
+  .route('/:userId')
+  .get(GetUserByIdController)
+  .delete(DeleteUserByIdController);
 
 export { userRoutes };

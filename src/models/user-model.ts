@@ -3,7 +3,7 @@ export type UserModel = {
   username: string;
   email: string;
   fullName: string;
-  password?: string;
+  password?: string | null;
   isVerified: boolean;
   isEmailVerified: boolean;
   dateOfBirth: string | null;

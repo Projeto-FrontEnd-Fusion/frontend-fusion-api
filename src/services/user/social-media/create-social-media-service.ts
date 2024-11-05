@@ -1,6 +1,6 @@
-import { makeUuidAdapter } from '@/factories/infra/id';
 import { PrismaHelper } from '@/infra/db/prisma/helpers';
-import { SocialMediaModel } from '@/models';
+import { makeUuidAdapter } from '@/factories/infra/id';
+import { type SocialMediaModel } from '@/models';
 
 export async function CreateSocialMediaService(
   data: Omit<SocialMediaModel, 'id'>,

@@ -1,4 +1,4 @@
-import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper';
+import { PrismaHelper } from '@/infra/db/prisma/helpers';
 import { SkillModel } from '@/models/skill-model';
 
 export async function GetManySkillsService(): Promise<SkillModel[] | []> {

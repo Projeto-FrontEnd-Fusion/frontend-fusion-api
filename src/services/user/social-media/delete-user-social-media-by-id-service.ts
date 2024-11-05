@@ -14,7 +14,7 @@ export async function DeleteUserSocialMediaByIdService(
     },
   });
 
-  await prisma.socialMedia.delete({
+  const deleted = await prisma.socialMedia.delete({
     where: {
       id: socialMediaId,
     },

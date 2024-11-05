@@ -1,4 +1,4 @@
-import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper';
+import { PrismaHelper } from '@/infra/db/prisma/helpers';
 
 export async function GetManyUsersService(): Promise<any[] | []> {
   const prisma = await PrismaHelper.getPrisma();

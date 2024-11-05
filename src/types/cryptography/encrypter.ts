@@ -1,3 +1,3 @@
 export interface Encrypter {
-  execute: (userId: string, sessionId: string) => { token: string };
+  execute: (userId: string, sessionId: string) => string;
 }

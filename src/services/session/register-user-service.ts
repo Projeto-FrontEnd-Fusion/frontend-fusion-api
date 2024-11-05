@@ -5,6 +5,7 @@ import {
 import { makeHashGeneratorAdapter } from '@/factories/infra/cryptography/bcrypt/hash-generator-adapter';
 import { makeUuidAdapter } from '@/factories/infra/id/uuid-adapter-factory';
 import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper';
+import { UserModel } from '@/models';
 import { Either, left, right } from '@/shared/either';
 
 interface CreateUserDTO {
@@ -15,11 +16,13 @@ interface CreateUserDTO {
   createdAt: string;
 }
 
-export async function CreateUserService(
+export type RegisterUserServiceResponse = Promise<
+  Either<EmailAlreadyRegisteredError | UsernameAlreadyExistsError, UserModel>
+>;
+
+export async function RegisterUserService(
   data: CreateUserDTO
-): Promise<
-  Either<EmailAlreadyRegisteredError | UsernameAlreadyExistsError, any>
-> {
+): RegisterUserServiceResponse {
   const prisma = await PrismaHelper.getPrisma();
 
   const emailExists = await prisma.user.findUnique({
@@ -45,7 +48,7 @@ export async function CreateUserService(
       fullName: data.fullName,
       email: data.email,
       password: makeHashGeneratorAdapter().hash(data.password),
-      createdAt: new Date().toString(),
+      createdAt: new Date().toISOString(),
     },
   });
 

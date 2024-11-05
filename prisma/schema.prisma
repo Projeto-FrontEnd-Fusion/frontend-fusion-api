@@ -23,29 +23,33 @@ model User {
   email           String  @unique(map: "uq_email")
   fullName        String  @map("full_name")
   password        String
-  isVerified      Boolean @default(value: false)
-  isEmailVerified Boolean @default(value: false)
+  isVerified      Boolean @default(value: false) @map("is_verified")
+  isEmailVerified Boolean @default(value: false) @map("is_email_verified")
   dateOfBirth     String? @map("date_of_birth")
-  addressId       String?
+  addressId       String? @map("address_id")
+  teamId          String? @map("team_id")
   createdAt       String  @map("created_at")
+  updatedAt       String? @map("updated_at")
 
   address     Address?          @relation(fields: [addressId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_address")
   sessions    Session[]
   socialMedia UserSocialMedia[]
   projects    Project[]
+  Team        Team?             @relation(fields: [teamId], references: [id])
 
   @@map("user")
 }
 
 model Session {
   id        String  @id(map: "pk_session") @unique(map: "uq_session_id")
+  userId    String  @map("user_id")
   ip        String?
-  userAgent String
+  userAgent String? @map("user_agent")
   active    Boolean @default(value: true)
   createdAt String  @map("created_at")
   updatedAt String? @map("updated_at")
-  userId    String
-  user      User    @relation(fields: [userId], references: [id])
+
+  user User @relation(fields: [userId], references: [id])
 
   @@map("user_sessions")
 }
@@ -72,19 +76,62 @@ model UserSocialMedia {
   @@map("user_social_media")
 }
 
+model Team {
+  id          String  @id(map: "pk_team") @unique(map: "uq_team_id")
+  description String?
+  name        String  @unique(map: "uq_team_name")
+  createdAt   String  @unique(map: "created_at")
+  updatedAt   String? @unique(map: "updated_at")
+  coordinator String
+
+  users User[]
+
+  @@map("user_team")
+}
+
+model Stack {
+  id        String @id(map: "pk_stack") @unique(map: "uq_stack_id")
+  name      String @unique(map: "uq_stack_name")
+  createdAt String @map("created_at")
+
+  @@map("user_stack")
+}
+
 model Skill {
-  id        String   @id(map: "pk_skill") @unique(map: "uq_skill_id")
-  skill     String
-  createdAt DateTime @default(now()) @map("created_at")
+  id        String @id(map: "pk_skill") @unique(map: "uq_skill_id")
+  name      String
+  createdAt String @map("created_at")
 
   @@map("user_skill")
 }
 
+model Career {
+  id        String @id(map: "pk_career") @unique(map: "uq_career_id")
+  name      String
+  createdAt String @map("created_at")
+
+  tools Tool[]
+
+  @@map("user_career")
+}
+
+model Tool {
+  id        String  @id(map: "pk_tool") @unique(map: "uq_tool_id")
+  careerId  String? @map("career_id")
+  name      String
+  createdAt String  @map("createdAt")
+
+  Career Career? @relation(fields: [careerId], references: [id])
+
+  @@map("career_tool")
+}
+
 model Project {
-  id        String   @id(map: "pk_project") @unique(map: "uq_project_id")
-  url       String
-  title     String
-  createdAt DateTime @default(now()) @map("created_at")
+  id          String  @id(map: "pk_project") @unique(map: "uq_project_id")
+  url         String
+  title       String
+  description String?
+  createdAt   String  @map("created_at")
 
   user User[]
 
