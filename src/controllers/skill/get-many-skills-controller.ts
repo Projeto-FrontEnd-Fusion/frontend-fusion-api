@@ -1,6 +1,7 @@
+import type { Request, Response } from 'express';
+
 import { GetManySkillsService } from '@/services/skills';
 import HttpStatusCode from '@/utils/statusCode';
-import type { Request, Response } from 'express';
 
 export async function GetManySkillsController(
   req: Request,
@@ -10,7 +11,7 @@ export async function GetManySkillsController(
 
   res.send({
     data: skills,
-    message: '',
+    message: 'Successfully finded many skills',
     statusCode: HttpStatusCode.OK,
   });
 

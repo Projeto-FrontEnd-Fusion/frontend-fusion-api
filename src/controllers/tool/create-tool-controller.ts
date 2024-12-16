@@ -20,4 +20,6 @@ export async function CreateToolController(req: Request, res: Response) {
     message: 'Successfully created Tool',
     statusCode: HttpStatusCode.CREATED,
   });
+
+  return;
 }

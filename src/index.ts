@@ -13,6 +13,7 @@ import { corsOptions, limiter } from '@/configs';
 import { RequestLog } from './shared/helpers/req-log';
 
 const app: Application = express();
+
 app.use(express.json());
 app.use(cors(corsOptions));
 app.use(limiter);

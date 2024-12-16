@@ -6,4 +6,6 @@ export async function GetManyProjectsController(req: Request, res: Response) {
   const data = await GetManyProjectsService();
 
   res.send({ data: data });
+
+  return;
 }

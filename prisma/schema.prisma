@@ -77,12 +77,12 @@ model UserSocialMedia {
 }
 
 model Team {
-  id          String  @id(map: "pk_team") @unique(map: "uq_team_id")
-  description String?
-  name        String  @unique(map: "uq_team_name")
-  createdAt   String  @unique(map: "created_at")
-  updatedAt   String? @unique(map: "updated_at")
-  coordinator String
+  id            String  @id(map: "pk_team") @unique(map: "uq_team_id")
+  description   String?
+  name          String  @unique(map: "uq_team_name")
+  createdAt     String  @unique(map: "created_at")
+  updatedAt     String? @unique(map: "updated_at")
+  coordinatorId String?
 
   users User[]
 

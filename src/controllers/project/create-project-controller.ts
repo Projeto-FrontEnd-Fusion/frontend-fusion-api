@@ -7,17 +7,17 @@ export async function CreateProjectController(
   req: Request,
   res: Response
 ): Promise<void> {
-  const body = req.body;
+  const { url, title } = req.body;
 
-  const created = await CreateProjectService(body);
-
-  if (!body.url && !body.title) {
+  if (!url && !title) {
     res.send({
       data: null,
       message: 'Missing information',
       statusCode: HttpStatusCode.NOT_ACCEPTABLE,
     });
   }
+
+  const created = await CreateProjectService(req.body);
 
   if (created) {
     res.send({

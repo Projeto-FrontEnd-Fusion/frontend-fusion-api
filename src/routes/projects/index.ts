@@ -15,7 +15,7 @@ projectsRoute
   .get(GetManyProjectsController)
   .post(CreateProjectController);
 projectsRoute
-  .route('/:id')
+  .route('/:projectId')
   .get(GetProjectByIdController)
   .delete(DeleteProjectByIdController);
 projectsRoute.get('/user/:userId', GetManyProjectsByUserIdController);
