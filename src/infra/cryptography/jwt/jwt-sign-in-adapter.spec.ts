@@ -15,7 +15,7 @@ describe('JwtSignInAdapter', () => {
   it('Should call sign with correct values', async () => {
     const sut = makeSut();
     const signSpy = jest.spyOn(jwt, 'sign');
-    sut.execute('any_id');
+    sut.execute('any_id', 'any_session_id');
     expect(signSpy).toHaveBeenCalledWith({ email: 'any_id' }, 'any_secret', {
       expiresIn: '1h',
     });
@@ -26,12 +26,12 @@ describe('JwtSignInAdapter', () => {
     jest.spyOn(jwt, 'sign').mockImplementationOnce(() => {
       throw new Error();
     });
-    expect(() => sut.execute('any_id')).toThrow();
+    expect(() => sut.execute('any_id', 'any_session_id')).toThrow();
   });
 
   it('Should return a token if sign success', async () => {
     const sut = makeSut();
-    const accessToken = sut.execute('any_id');
+    const accessToken = sut.execute('any_id', 'any_session_id');
     expect(accessToken).toEqual({ token: 'any_token' });
   });
 });

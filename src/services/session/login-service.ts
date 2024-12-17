@@ -1,7 +1,7 @@
 import { WrongPasswordError } from '@/errors/account';
 import { UserNotFoundedError } from '@/errors/user';
 import { makeHashGeneratorAdapter } from '@/factories/infra/cryptography/bcrypt/hash-generator-adapter';
-import { makeJwtSignInAdapter } from '@/factories/infra/cryptography/jwt-sign-in-adapter-factory';
+import { makeJwtSignInAdapter } from '@/factories/infra/cryptography/jwt';
 import { makeUuidAdapter } from '@/factories/infra/id/uuid-adapter-factory';
 import { PrismaHelper } from '@/infra/db/prisma/helpers/prisma-helper';
 import { UserModel } from '@/models';
